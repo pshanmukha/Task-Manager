@@ -1,4 +1,4 @@
-# Task-Manager
+# Task-Manager ![GitHub last commit](https://img.shields.io/github/last-commit/pshanmukha/Task-Manager)
 This is a task manager app built using Flutter, Node.js, Express, and MongoDB. The app allows users to create, manage and track their daily tasks efficiently.
 
 ## ✨Features
