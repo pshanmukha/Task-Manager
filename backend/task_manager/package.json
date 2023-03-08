@@ -1,0 +1,14 @@
+{
+  "name": "task_manager",
+  "version": "1.0.0",
+  "description": "Backend server to create and produces the apis and to manage the data in mongodb for task manager app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shanmukha",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
