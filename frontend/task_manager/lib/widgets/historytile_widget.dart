@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_manager/constants/constants.dart';
+import 'package:task_manager/models/tasks_model.dart';
+import 'package:task_manager/screens/edittask_screen.dart';
 
-Widget taskTile(Size size) {
-  bool _isCompleted = true;
+Widget taskTile(Size size, BuildContext context, Task task) {
+  bool _isCompleted = task.completed;
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: size.width * 0.02),
     child: Card(
       child: ListTile(
-        leading: _isCompleted ? Icon(Icons.check_circle_outline,color: checkIcon,): null,
+        leading: _isCompleted ? Icon(Icons.check_circle_outline,color: checkIcon,) : Icon(Icons.unpublished_outlined,color: deleteIcon,),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Submit',
+              task.name,
               style: GoogleFonts.robotoMono(
                 fontSize: 20,
-                decoration: TextDecoration.lineThrough,
+                decoration: _isCompleted ? TextDecoration.lineThrough : null,
               ),
             ),
             Row(
               children: [
-                IconButton(icon: Icon(Icons.edit_square,color: checkIcon,fill: 0.0,),onPressed: () {},),
+                IconButton(icon: Icon(Icons.edit_square,color: checkIcon,fill: 0.0,),onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const EditTaskScreen()),
+                  );
+                },),
                 IconButton(icon: Icon(Icons.delete,color: deleteIcon,),onPressed: () {},),
               ],
             )
