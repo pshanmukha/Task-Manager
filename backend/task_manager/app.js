@@ -5,8 +5,11 @@ require("dotenv").config();
 const connectDB = require("./db/connect");
 const notFound = require("./middlewares/not-found")
 const errorHandlerMiddleware = require("./middlewares/error-handler");
+var cors = require('cors')
 
 const port = 3000;
+
+app.use(cors())
 app.use(express.json());
 app.use(express.static("./public"));
 app.use("/api/v1/tasks", tasks);

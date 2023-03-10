@@ -14,11 +14,29 @@ class DioClient {
         responseType: ResponseType.plain,
       ),);
       final tasks = tasksFromJson(response.data);
-      debugPrint("${response}");
+      debugPrint("$response");
       return tasks;
     } on DioError catch(e){
       debugPrint("StatusCode: ${e.toString()}");
       throw Exception("Failed to load Tasks");
+    }
+  }
+
+  Future<bool> createTask({required String name, bool isCompleted = false}) async {
+    try{
+      final response = await dio.post(baseURL+"/tasks",
+        data: {
+          "name":name,
+          "completed":isCompleted,
+        },
+        options: Options(
+        responseType: ResponseType.plain,
+      ),);
+      debugPrint("statusCode: ${response.statusCode}");
+      return response.statusCode == 201;//successfully created
+    } on DioError catch(e){
+      debugPrint("StatusCode: ${e.toString()}");
+      throw Exception("Failed to create Tasks");
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_manager/constants/constants.dart';
+import 'package:task_manager/models/tasks_model.dart';
+import 'package:task_manager/services/dio_client.dart';
 
 class EditTaskScreen extends StatefulWidget {
   const EditTaskScreen({Key? key}) : super(key: key);
@@ -12,7 +14,15 @@ class EditTaskScreen extends StatefulWidget {
 class _EditTaskScreenState extends State<EditTaskScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
+  late DioClient dioClient;
   bool isCompleted = false;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    dioClient = DioClient();
+    super.initState();
+  }
   @override
   void dispose() {
     _nameController.dispose();
@@ -36,6 +46,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(
+                        height: 8,
+                      ),
                       Text(
                         "Edit Task",
                         style: GoogleFonts.robotoMono(
@@ -150,10 +163,20 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                           ],
                         ),
                       ),
+                      const SizedBox(
+                        height: 8,
+                      ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             print("validated ${_nameController.text}");
+                            setState((){
+                              isLoading = true;
+                            });
+
+                            setState((){
+                              isLoading = false;
+                            });
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -164,8 +187,34 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: Text(
+                        child: !isLoading ?
+                        Text(
                           'Edit',
+                          style: GoogleFonts.robotoMono(
+                            fontSize: 20,
+                          ),
+                        )
+                        : const SizedBox(
+                          height: 18,
+                          child: CircularProgressIndicator(color: Colors.white,),),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: backButton,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          'Back To Tasks',
                           style: GoogleFonts.robotoMono(
                             fontSize: 20,
                           ),
