@@ -1,4 +1,3 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,13 +38,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     _tasksList = dioClient.fetchTasks();
   }
 
-  ScaffoldMessengerState showSnackBar({required String text,required Color backgroundColor}){
+  ScaffoldMessengerState showSnackBar(
+      {required String text, required Color backgroundColor}) {
     return ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(
-              text),
+          content: Text(text),
           backgroundColor: backgroundColor,
         ),
       );
@@ -142,9 +141,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               name: _nameController.text.toString());
                           if (isTaskCreated) {
                             getTasks();
-                            showSnackBar(text: "Success!, Task created..",backgroundColor: backButton,);
+                            showSnackBar(
+                              text: "Success!, Task created..",
+                              backgroundColor: backButton,
+                            );
                           } else {
-                            showSnackBar(text: "Failure!, Something went wrong..",backgroundColor: deleteIcon,);
+                            showSnackBar(
+                              text: "Failure!, Something went wrong..",
+                              backgroundColor: deleteIcon,
+                            );
                           }
 
                           setState(() {
@@ -168,13 +173,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               ),
                             )
                           : const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-
                     ),
                     const SizedBox(
                       height: 8,
@@ -194,12 +198,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           : '${snapshot.hasError}');
                     }
                     return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.tasks.length,
-                        itemBuilder: (context, index) {
-                          return taskTile(
-                              size, context, snapshot.data!.tasks[index]);
-                        });
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.tasks.length,
+                      itemBuilder: (context, index) {
+                        return taskTile(
+                            size, context, snapshot.data!.tasks[index]);
+                      },
+                    );
                   }
                   return const Center(child: CircularProgressIndicator());
                 },
