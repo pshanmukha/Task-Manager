@@ -12,34 +12,19 @@ Widget taskTile(Size size, BuildContext context, Task task) {
     child: Card(
       child: OpenContainer(
         transitionType: ContainerTransitionType.fadeThrough,
-        closedBuilder: (BuildContext context,
-            VoidCallback openContainer) {
+        transitionDuration: const Duration(milliseconds: 500),
+        closedBuilder: (BuildContext context, VoidCallback openContainer) {
           return ListTile(
             leading: _isCompleted ? Icon(Icons.check_circle_outline,color: checkIcon,) : Icon(Icons.unpublished_outlined,color: deleteIcon,),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  task.name,
-                  style: GoogleFonts.robotoMono(
-                    fontSize: 20,
-                    decoration: _isCompleted ? TextDecoration.lineThrough : null,
-                  ),
-                ),
-                Row(
-                  children: [
-                    IconButton(icon: Icon(Icons.edit_square,color: checkIcon,fill: 0.0,),onPressed: () {
-                      /*Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const EditTaskScreen()),
-                    );*/
-                      openContainer();
-                    },),
-                    IconButton(icon: Icon(Icons.delete,color: deleteIcon,),onPressed: () {},),
-                  ],
-                )
-              ],
+            title: Text(
+              task.name,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.robotoMono(
+                fontSize: 20,
+                decoration: _isCompleted ? TextDecoration.lineThrough : null,
+              ),
             ),
+            trailing: IconButton(icon: Icon(Icons.delete,color: deleteIcon,),onPressed: () {},),
           );
         },
         openBuilder: (BuildContext _, VoidCallback __) {
