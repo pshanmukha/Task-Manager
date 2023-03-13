@@ -5,7 +5,6 @@ This is a task manager app built using Flutter, Node.js, Express, and MongoDB. T
 * Create, edit and delete tasks
 * Mark tasks as completed or incomplete
 * Filter tasks by completion status
-* Sort tasks by due date or creation date
 * Search for tasks by keyword
 * Responsive and user-friendly interface
 ## ✨Technology Stack
