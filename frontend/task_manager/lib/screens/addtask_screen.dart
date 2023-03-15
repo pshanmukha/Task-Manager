@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:task_manager/models/tasks_model.dart';
 import 'package:task_manager/services/dio_client.dart';
 import 'package:task_manager/widgets/historytile_widget.dart';
+import 'package:task_manager/widgets/utils.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
@@ -38,17 +39,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     _tasksList = dioClient.fetchTasks();
   }
 
-  ScaffoldMessengerState showSnackBar(
-      {required String text, required Color backgroundColor}) {
-    return ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(text),
-          backgroundColor: backgroundColor,
-        ),
-      );
+  updateTasks() {
+    setState(() {
+      getTasks();
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,22 +129,24 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          debugPrint("validated ${_nameController.text}");
                           setState(() {
                             isLoading = true;
                           });
                           isTaskCreated = await dioClient.createTask(
                               name: _nameController.text.toString());
                           if (isTaskCreated) {
+                            _nameController.clear();
                             getTasks();
                             showSnackBar(
                               text: "Success!, Task created..",
                               backgroundColor: backButton,
+                              context: context,
                             );
                           } else {
                             showSnackBar(
                               text: "Failure!, Something went wrong..",
                               backgroundColor: deleteIcon,
+                              context: context,
                             );
                           }
 
@@ -201,8 +199,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       shrinkWrap: true,
                       itemCount: snapshot.data!.tasks.length,
                       itemBuilder: (context, index) {
-                        return taskTile(
-                            size, context, snapshot.data!.tasks[index]);
+                        return TaskTile(
+                          onReachMainScreen: () {
+                            updateTasks();
+                          },
+                          size: size,
+                          task: snapshot.data!.tasks[index],
+                        );
                       },
                     );
                   }

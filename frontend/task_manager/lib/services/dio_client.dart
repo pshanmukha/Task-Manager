@@ -39,4 +39,49 @@ class DioClient {
       throw Exception("Failed to create Tasks");
     }
   }
+
+  Future<SingleTask> fetchSingleTaskByID({required String taskID}) async {
+    try{
+      final response = await dio.get("$baseURL/tasks/$taskID",options: Options(
+        responseType: ResponseType.plain,
+      ),);
+      final task = singleTaskFromJson(response.data);
+      debugPrint("$response");
+      return task;
+    } on DioError catch(e){
+      debugPrint("StatusCode: ${e.toString()}");
+      throw Exception("Failed to load Task");
+    }
+  }
+
+  Future<bool> updateTask({required String name,required bool isCompleted,required String taskID}) async {
+    try{
+      final response = await dio.patch("$baseURL/tasks/$taskID",
+        data: {
+          "name":name,
+          "completed":isCompleted,
+        },
+        options: Options(
+          responseType: ResponseType.plain,
+        ),);
+      debugPrint("statusCode: ${response.statusCode}");
+      return response.statusCode == 200;//successfully updated
+    } on DioError catch(e){
+      debugPrint("StatusCode: ${e.toString()}");
+      throw Exception("Failed to update Task");
+    }
+  }
+
+  Future<bool> deleteTask({required String taskID}) async {
+    try{
+      final response = await dio.delete("$baseURL/tasks/$taskID",options: Options(
+        responseType: ResponseType.plain,
+      ),);
+      debugPrint("statusCode: ${response.statusCode}");
+      return response.statusCode == 200;//successfully deleted
+    } on DioError catch(e){
+      debugPrint("StatusCode: ${e.toString()}");
+      throw Exception("Failed to delete Task");
+    }
+  }
 }
